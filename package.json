@@ -1,0 +1,31 @@
+{
+  "name": "jsbasecamp-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "lint": "eslint --fix --config .eslintrc.json src/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ivanna98/jsBaseCamp-api.git"
+  },
+  "author": "Ivanna Novak [ivanna1998.novak@gmail.com]",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ivanna98/jsBaseCamp-api/issues"
+  },
+  "homepage": "https://github.com/Ivanna98/jsBaseCamp-api#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.24.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "nodemon": "^1.19.4"
+  }
+}
