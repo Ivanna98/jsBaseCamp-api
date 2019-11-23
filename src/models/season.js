@@ -7,21 +7,21 @@ const SeasonSchema = new mongoose.Schema({
   },
   seasonName: {
     type: String,
-    require: true,
+    required: true,
   },
   seasonNumber: {
     type: Number,
-    require: true,
+    required: true,
   },
   longDescription: {
     type: String,
-    require: true,
+    required: true,
   },
   shortDescription: {
     type: String,
-    require: true,
+    required: true,
   },
-  posterUrl: {
+  posterURL: {
     type: String,
   },
   videoFragmentURL: String,
