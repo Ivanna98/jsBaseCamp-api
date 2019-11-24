@@ -2,8 +2,9 @@ const express = require('express');
 
 const router = express.Router();
 const EpisodeCollection = require('../models/episode');
+const protect = require('../middleware/protectedRoute');
 
-router.post('/', async (req, res) => {
+router.post('/', protect, async (req, res) => {
   try {
     const {
       season,
@@ -57,7 +58,7 @@ router.get('/', async (req, res) => {
 });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', protect, async (req, res) => {
   try {
     const { id } = req.params;
     await EpisodeCollection.findByIdAndDelete(id);
@@ -67,7 +68,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', protect, async (req, res) => {
   try {
     const {
       season,

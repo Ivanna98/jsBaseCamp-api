@@ -1,13 +1,14 @@
 const express = require('express');
 
 const app = express();
-const moment = require('moment');
 const mongoose = require('mongoose');
 const config = require('./config');
 const shows = require('./routes/shows');
 const seasons = require('./routes/seasons');
 const episodes = require('./routes/episodes');
-
+const auth = require('./routes/auth');
+const isAuth = require('./middleware/isAuth');
+const logger = require('./middleware/logger');
 
 const PORT = process.env.PORT || 3000;
 
@@ -17,12 +18,8 @@ mongoose.connection.on('error', (err) => {
   console.log(err);
 });
 
-const logger = (req, res, next) => {
-  console.log(`${req.method}:${req.path} ${moment().format()}`);
-  next();
-};
 app.use(logger);
-
+app.use(isAuth);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -33,6 +30,7 @@ app.get('/ready', (req, res) => {
 app.use('/shows', shows);
 app.use('/seasons', seasons);
 app.use('/episodes', episodes);
+app.use('/auth', auth);
 
 app.use((err, req, res) => {
   console.error(err.stack);
