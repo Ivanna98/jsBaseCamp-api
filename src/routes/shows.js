@@ -2,6 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 const ShowCollection = require('../models/show');
+const SeasonCollection = require('../models/season');
+const EpisodeCollection = require('../models/episode');
 
 router.post('/', async (req, res) => {
   try {
@@ -13,7 +15,6 @@ router.post('/', async (req, res) => {
       longDescription,
       shortDescription,
       videoFragmentURL,
-      userRating,
     } = req.body;
     const show = new ShowCollection({
       title,
@@ -23,7 +24,6 @@ router.post('/', async (req, res) => {
       longDescription,
       shortDescription,
       videoFragmentURL,
-      userRating,
     });
     const savedRecord = await show.save();
     return res.json({
@@ -57,7 +57,11 @@ router.get('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    await ShowCollection.findByIdAndDelete(id);
+    await Promise.all(
+      ShowCollection.findByIdAndDelete(id),
+      SeasonCollection.deleteMany({ show: id }),
+      EpisodeCollection.deleteMany({ show: id }),
+    );
     return res.status(200).end();
   } catch (e) {
     return res.status(400).end();
@@ -74,7 +78,6 @@ router.put('/:id', async (req, res) => {
       longDescription,
       shortDescription,
       videoFragmentURL,
-      userRating,
     } = req.body;
     const { id } = req.params;
     const updateShow = await ShowCollection.findByIdAndUpdate(id, {
@@ -85,7 +88,6 @@ router.put('/:id', async (req, res) => {
       longDescription,
       shortDescription,
       videoFragmentURL,
-      userRating,
     }, {
       new: true,
     });
