@@ -3,23 +3,23 @@ const mongoose = require('mongoose');
 const ShowSchema = new mongoose.Schema({
   title: {
     type: String,
-    require: true,
+    required: true,
   },
   subtitle: String,
   startDate: {
     type: Date,
-    require: true,
+    required: true,
   },
   posterImage: {
     type: String,
   },
   longDescription: {
     type: String,
-    require: true,
+    required: true,
   },
   shortDescription: {
     type: String,
-    require: true,
+    required: true,
   },
   videoFragmentURL: String,
   userRating: [

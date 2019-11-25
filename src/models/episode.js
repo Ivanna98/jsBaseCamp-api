@@ -11,21 +11,21 @@ const EpisodeSchema = new mongoose.Schema({
   },
   episodeName: {
     type: String,
-    require: true,
+    required: true,
   },
   episodeNumber: {
     type: Number,
-    require: true,
+    required: true,
   },
   longDescription: {
     type: String,
-    require: true,
+    required: true,
   },
   shortDescription: {
     type: String,
-    require: true,
+    required: true,
   },
-  posterUrl: {
+  posterURL: {
     type: String,
   },
   videoFragmentURL: String,
@@ -34,7 +34,7 @@ const EpisodeSchema = new mongoose.Schema({
       review: String,
       rate: Number,
     },
-  ]
+  ],
 
 }, {
   timestamps: true,
