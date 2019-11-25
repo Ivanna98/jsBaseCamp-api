@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const SeasonCollection = require('../models/season');
+const EpisodeCollection = require('../models/episode');
 
 router.post('/', async (req, res) => {
   try {
@@ -14,7 +15,7 @@ router.post('/', async (req, res) => {
       posterURL,
       videoFragmentURL,
     } = req.body;
-    if (SeasonCollection.findOne({ seasonNumber })) {
+    if (await SeasonCollection.findOne({ seasonNumber })) {
       return res.status(403).end();
     }
     const season = new SeasonCollection({
@@ -58,7 +59,10 @@ router.get('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    await SeasonCollection.findByIdAndDelete(id);
+    await Promise.all([
+      SeasonCollection.findByIdAndDelete(id),
+      EpisodeCollection.deleteMany({ season: id }),
+    ]);
     return res.status(200).end();
   } catch (e) {
     return res.status(400).end();

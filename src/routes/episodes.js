@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
       posterURL,
       videoFragmentURL,
     } = req.body;
-    if (EpisodeCollection.findOne({ episodeNumber })) {
+    if (await EpisodeCollection.findOne({ episodeNumber })) {
       return res.status(403).end();
     }
     const episode = new EpisodeCollection({
