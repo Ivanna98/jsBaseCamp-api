@@ -4,8 +4,10 @@ const router = express.Router();
 const ShowCollection = require('../models/show');
 const SeasonCollection = require('../models/season');
 const EpisodeCollection = require('../models/episode');
+const protect = require('../middleware/protectedRoute');
 
-router.post('/', async (req, res) => {
+
+router.post('/', protect, async (req, res) => {
   try {
     const {
       title,
@@ -46,6 +48,7 @@ router.get('/:id', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
+    console.log('auth', req.auth);
     const allShow = await ShowCollection.find();
     return res.json(allShow);
   } catch (e) {
@@ -54,7 +57,7 @@ router.get('/', async (req, res) => {
 });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', protect, async (req, res) => {
   try {
     const { id } = req.params;
     await Promise.all(
@@ -68,7 +71,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', protect, async (req, res) => {
   try {
     const {
       title,
