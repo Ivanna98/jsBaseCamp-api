@@ -5,6 +5,7 @@ const ShowCollection = require('../models/show');
 const SeasonCollection = require('../models/season');
 const EpisodeCollection = require('../models/episode');
 const protect = require('../middleware/protectedRoute');
+const postRate = require('./rating');
 
 
 router.post('/', protect, async (req, res) => {
@@ -99,5 +100,7 @@ router.put('/:id', protect, async (req, res) => {
     return res.status(400).end();
   }
 });
+
+router.post('/:id/rating', postRate(ShowCollection));
 
 module.exports = router;

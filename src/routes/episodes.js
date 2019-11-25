@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const EpisodeCollection = require('../models/episode');
 const protect = require('../middleware/protectedRoute');
+const postRate = require('./rating');
 
 router.post('/', protect, async (req, res) => {
   try {
@@ -98,5 +99,7 @@ router.put('/:id', protect, async (req, res) => {
     return res.status(400).end();
   }
 });
+
+router.post('/:id/rating', postRate(EpisodeCollection));
 
 module.exports = router;
