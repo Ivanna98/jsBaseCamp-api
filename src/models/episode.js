@@ -33,6 +33,10 @@ const EpisodeSchema = new mongoose.Schema({
     {
       review: String,
       rate: Number,
+      name: {
+        type: String,
+        default: 'Anonym',
+      },
     },
   ],
 
