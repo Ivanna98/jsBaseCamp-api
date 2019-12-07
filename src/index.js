@@ -2,6 +2,7 @@ const express = require('express');
 
 const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors');
 const config = require('./config');
 const shows = require('./routes/shows');
 const seasons = require('./routes/seasons');
@@ -10,7 +11,7 @@ const auth = require('./routes/auth');
 const isAuth = require('./middleware/isAuth');
 const logger = require('./middleware/logger');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 
 mongoose.connect(config.db.url, { useNewUrlParser: true })
   .catch((error) => console.log(error.massage));
@@ -18,6 +19,7 @@ mongoose.connection.on('error', (err) => {
   console.log(err);
 });
 
+app.use(cors());
 app.use(logger);
 app.use(isAuth);
 app.use(express.json());

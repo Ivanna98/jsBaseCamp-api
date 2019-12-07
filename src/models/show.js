@@ -13,6 +13,13 @@ const ShowSchema = new mongoose.Schema({
   posterImage: {
     type: String,
   },
+  genre: {
+    type: String,
+  },
+  priority: {
+    type: Number,
+    default: 1,
+  },
   longDescription: {
     type: String,
     required: true,
@@ -22,6 +29,7 @@ const ShowSchema = new mongoose.Schema({
     required: true,
   },
   videoFragmentURL: String,
+  rate: Number,
   userRating: [
     {
       review: String,
