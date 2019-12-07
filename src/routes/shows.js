@@ -49,10 +49,28 @@ router.get('/:id', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    console.log('auth', req.auth);
-    const allShow = await ShowCollection.find();
-    return res.json(allShow);
+    const selector = {};
+    const { genre, priority } = req.query || {};
+    if (genre) {
+      selector.genre = genre;
+    }
+    if (priority) {
+      selector.priority = { $gte: parseFloat(priority) };
+    }
+    const shows = await ShowCollection.find(
+      selector,
+      {
+        _id: true,
+        title: true,
+        posterImage: true,
+        rate: true,
+        shortDescription: true,
+        genre: true,
+      },
+    );
+    return res.json({ shows });
   } catch (e) {
+    console.log(e);
     return res.status(400).end();
   }
 });
