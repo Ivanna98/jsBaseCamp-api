@@ -37,6 +37,22 @@ router.post('/', protect, async (req, res) => {
   }
 });
 
+router.get('/count', async (req, res) => {
+  try {
+    console.log('start');
+    const selector = {};
+    const { genre } = req.query || {};
+    if (genre) {
+      selector.genre = genre;
+    }
+    const showsAmount = await ShowCollection.count(selector);
+    return res.json({ showsAmount });
+  } catch (e) {
+    console.log(e);
+    return res.status(400).end();
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -50,7 +66,9 @@ router.get('/:id', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const selector = {};
-    const { genre, priority } = req.query || {};
+    const {
+      genre, priority, skip, limit,
+    } = req.query || {};
     if (genre) {
       selector.genre = genre;
     }
@@ -67,14 +85,13 @@ router.get('/', async (req, res) => {
         shortDescription: true,
         genre: true,
       },
-    );
+    ).skip(Number(skip) || 0).limit(Number(limit) || 0);
     return res.json({ shows });
   } catch (e) {
     console.log(e);
     return res.status(400).end();
   }
 });
-
 
 router.delete('/:id', protect, async (req, res) => {
   try {
