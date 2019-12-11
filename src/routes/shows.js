@@ -14,6 +14,8 @@ router.post('/', protect, async (req, res) => {
       title,
       subtitle,
       startDate,
+      priority,
+      genre,
       posterImage,
       longDescription,
       shortDescription,
@@ -23,6 +25,8 @@ router.post('/', protect, async (req, res) => {
       title,
       subtitle,
       startDate,
+      priority,
+      genre,
       posterImage,
       longDescription,
       shortDescription,
@@ -33,6 +37,7 @@ router.post('/', protect, async (req, res) => {
       data: savedRecord,
     });
   } catch (e) {
+    console.log(e.stack);
     return res.status(400).end();
   }
 });
@@ -113,6 +118,8 @@ router.put('/:id', protect, async (req, res) => {
       title,
       subtitle,
       startDate,
+      priority,
+      genre,
       posterImage,
       longDescription,
       shortDescription,
@@ -123,6 +130,8 @@ router.put('/:id', protect, async (req, res) => {
       title,
       subtitle,
       startDate,
+      priority,
+      genre,
       posterImage,
       longDescription,
       shortDescription,
