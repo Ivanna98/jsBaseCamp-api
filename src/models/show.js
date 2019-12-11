@@ -29,7 +29,10 @@ const ShowSchema = new mongoose.Schema({
     required: true,
   },
   videoFragmentURL: String,
-  rate: Number,
+  rate: {
+    type: Number,
+    default: 8,
+  },
   userRating: [
     {
       review: String,
