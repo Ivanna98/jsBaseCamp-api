@@ -17,7 +17,7 @@ router.post('/', protect, async (req, res) => {
       posterURL,
       videoFragmentURL,
     } = req.body;
-    if (await EpisodeCollection.findOne({ episodeNumber })) {
+    if (await EpisodeCollection.findOne({ episodeNumber, season })) {
       return res.status(403).end();
     }
     const episode = new EpisodeCollection({
@@ -51,8 +51,8 @@ router.get('/:id', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const allEpisode = await EpisodeCollection.find();
-    return res.json(allEpisode);
+    const oneEpisode = await EpisodeCollection.find();
+    return res.json(oneEpisode);
   } catch (e) {
     return res.status(400).end();
   }
@@ -72,8 +72,6 @@ router.delete('/:id', protect, async (req, res) => {
 router.put('/:id', protect, async (req, res) => {
   try {
     const {
-      season,
-      show,
       episodeName,
       episodeNumber,
       longDescription,
@@ -83,8 +81,6 @@ router.put('/:id', protect, async (req, res) => {
     } = req.body;
     const { id } = req.params;
     const updateEpisode = await EpisodeCollection.findByIdAndUpdate(id, {
-      season,
-      show,
       episodeName,
       episodeNumber,
       longDescription,

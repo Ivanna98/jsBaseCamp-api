@@ -18,7 +18,7 @@ router.post('/', protect, async (req, res) => {
       posterURL,
       videoFragmentURL,
     } = req.body;
-    if (await SeasonCollection.findOne({ seasonNumber })) {
+    if (await SeasonCollection.findOne({ seasonNumber, show })) {
       return res.status(403).end();
     }
     const season = new SeasonCollection({
@@ -42,22 +42,15 @@ router.post('/', protect, async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const oneSeason = await SeasonCollection.findById(id);
-    return res.json(oneSeason);
+    const [season, episodes] = await Promise.all([
+      SeasonCollection.findById(id).lean(),
+      EpisodeCollection.find({ season: id }),
+    ]);
+    return res.json({ ...season, episodes });
   } catch (e) {
     return res.status(400).end();
   }
 });
-
-router.get('/', async (req, res) => {
-  try {
-    const allSeason = await SeasonCollection.find();
-    return res.json(allSeason);
-  } catch (e) {
-    return res.status(400).end();
-  }
-});
-
 
 router.delete('/:id', protect, async (req, res) => {
   try {
@@ -75,7 +68,6 @@ router.delete('/:id', protect, async (req, res) => {
 router.put('/:id', protect, async (req, res) => {
   try {
     const {
-      show,
       seasonName,
       seasonNumber,
       longDescription,
@@ -85,7 +77,6 @@ router.put('/:id', protect, async (req, res) => {
     } = req.body;
     const { id } = req.params;
     const updateSeason = await SeasonCollection.findByIdAndUpdate(id, {
-      show,
       seasonName,
       seasonNumber,
       longDescription,

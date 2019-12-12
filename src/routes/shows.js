@@ -44,7 +44,6 @@ router.post('/', protect, async (req, res) => {
 
 router.get('/count', async (req, res) => {
   try {
-    console.log('start');
     const selector = {};
     const { genre } = req.query || {};
     if (genre) {
@@ -61,8 +60,11 @@ router.get('/count', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const oneShow = await ShowCollection.findById(id);
-    return res.json(oneShow);
+    const [oneShow, seasons] = await Promise.all([
+      ShowCollection.findById(id).lean(),
+      SeasonCollection.find({ show: id }),
+    ]);
+    return res.json({ ...oneShow, seasons });
   } catch (e) {
     return res.status(400).end();
   }
@@ -101,13 +103,14 @@ router.get('/', async (req, res) => {
 router.delete('/:id', protect, async (req, res) => {
   try {
     const { id } = req.params;
-    await Promise.all(
+    await Promise.all([
       ShowCollection.findByIdAndDelete(id),
       SeasonCollection.deleteMany({ show: id }),
       EpisodeCollection.deleteMany({ show: id }),
-    );
+    ]);
     return res.status(200).end();
   } catch (e) {
+    console.log(e.stack);
     return res.status(400).end();
   }
 });
