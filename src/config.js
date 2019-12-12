@@ -11,6 +11,7 @@ const config = {
     password: process.env.PASS,
   },
   sKey: process.env.S_KEY,
+  fe: process.env.FE_HOST,
 };
 
 module.exports = config;
