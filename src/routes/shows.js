@@ -100,6 +100,49 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.post('/:id/rating', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      review,
+      rate,
+      name,
+    } = req.body;
+
+    const newEntity = await ShowCollection.findOneAndUpdate(
+      { _id: id },
+      {
+        $push: {
+          userRating: {
+            review,
+            rate,
+            name,
+          },
+        },
+      },
+      { new: true },
+    );
+    const rating = newEntity.userRating;
+    const amountRate = rating.length;
+    let sumRate = 0;
+    for (let i = 0; i < amountRate; i += 1) {
+      sumRate += rating[i].rate;
+    }
+    const newGeneralRate = (sumRate / amountRate).toFixed(1);
+    const updateShow = await ShowCollection.findByIdAndUpdate(id, {
+      rate: newGeneralRate,
+    }, {
+      new: true,
+    });
+    return res.json({
+      rating: updateShow.userRating,
+      updateShow,
+    });
+  } catch (e) {
+    return res.status(400).end();
+  }
+});
+
 router.delete('/:id', protect, async (req, res) => {
   try {
     const { id } = req.params;
